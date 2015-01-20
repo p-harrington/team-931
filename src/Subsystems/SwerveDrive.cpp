@@ -18,7 +18,7 @@ void SwerveDrive::InitDefaultCommand()
 static const float rot_scale = 1;
 static const complex rot_vecs[4] =
   { {rot_scale,-rot_scale},{-rot_scale,-rot_scale},
-	{-rot_scale,rot_scale},{rot_scale,rot_scale}};
+	{-rot_scale,rot_scale},{rot_scale,rot_scale}}; //wheel coordinates to be filled in
 
 void SwerveDrive::Drive(float x, float y, float rot)
  {complex straight(x,y), vecs[4];

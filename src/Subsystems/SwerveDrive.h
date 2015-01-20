@@ -24,9 +24,9 @@ private:
    double GetAngle(){return piRatio*encoder.GetVoltage();}
 	public:
    Wheel(): PIDController(1,0,0,this,&rotSpeed),
-	  encoder(ix), rotSpeed(ix),drvSpeed(4 + ix++)
-	//, speedGoal(0)
-	 {SetContinuous();
+	  encoder(ix), rotSpeed(ix),drvSpeed(4 + ix++)// ix:0-3; rot:0-3,drv:4-7 (see below)
+	//, speedGoal(0)	                       unless wiring says otherwise; might be 0-7, rot odd, drv even
+	 {SetContinuous(); 
 	  SetInputRange(0, maxVolts);}
    void Drive(complex);
    //void SetSpeedGoal(float);

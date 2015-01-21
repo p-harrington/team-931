@@ -25,4 +25,3 @@ void CommandBase::init()
 
 	oi = new OI();
 }
-

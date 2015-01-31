@@ -9,13 +9,18 @@ Elevator::Elevator() :
 		ctrlr(1,0,0,&sensor, &winchSpeed),
 		baselmt(2)//XXX insert dio port for 2
 {
-
+  ctrlr.SetInputRange(0,7);//XXX measure winch travel better
 }
 
 void Elevator::InitDefaultCommand()
 {
 	// Set the default command for a subsystem here.
 	//SetDefaultCommand(new MySpecialCommand());
+ }
+
+void Elevator::ZeroSensor()
+ {
+  sensor.Init();
  }
 
 void Elevator::Runwinch(float wspd)

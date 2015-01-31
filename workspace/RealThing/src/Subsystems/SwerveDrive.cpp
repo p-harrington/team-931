@@ -28,15 +28,15 @@ static const complex rot_vecs[numWheels] =
 void SwerveDrive::Drive(float x, float y, float rot, bool align)
  {complex straight(x,y), vecs[numWheels];
 
- for (int n=0; n<numWheels; ++n)
+ for (unsigned n=0; n<numWheels; ++n)
    {vecs[n] = straight + rot * rot_vecs[n];
    //SmartDashboard::PutNumber("victor " /*+ std::basic_string(n) + " setting"*/, real(vecs[n]));
    }
  float max = 0;
-  for (int n=0; n<numWheels; ++n)
+  for (unsigned n=0; n<numWheels; ++n)
    max = std::max(max, abs(vecs[n]));
   if (max < 1) max = 1;
-  for (int n=0; n<numWheels; ++n)
+  for (unsigned n=0; n<numWheels; ++n)
 	wheels[n].Drive(vecs[n] / max, align);
  }
 

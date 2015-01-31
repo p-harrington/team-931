@@ -20,9 +20,12 @@ RotationCtr::~RotationCtr()
 void RotationCtr::Init()
  {//XXX: when can we first read the angle?
  firstAngle = lastAngle = angle.PIDGet();
+ rotCtr = 0;
  }
+
 static const double near0 = (double)1/16,
                     near1 = 1 - near0;
+
 double RotationCtr::PIDGet()
  {double newAngle = angle.PIDGet();
   if (newAngle <= near0 && lastAngle > near1)

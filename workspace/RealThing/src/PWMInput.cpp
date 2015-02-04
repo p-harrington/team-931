@@ -13,7 +13,9 @@ PWMInput::PWMInput(uint32_t channel, unsigned max) :
    downup(rawsource),
    maxval(max)
  {updown.SetSemiPeriodMode(true);
+# if NotNewIdea // New idea, old way kept for reference
   downup.SetSemiPeriodMode(false);
+# endif
  }
 
 PWMInput::~PWMInput()
@@ -24,7 +26,11 @@ PWMInput::~PWMInput()
 double PWMInput::bareInput()
  {double uptime = updown.GetPeriod(),
 	 downtime=downup.GetPeriod();
-  return uptime * (maxval + 1) / (uptime + downtime);
+# if NotNewIdea
+ return uptime * (maxval + 1) / (uptime + downtime);
+# else
+ return uptime * (maxval + 1) / downtime;
+# endif
  }
 
 double PWMInput::PIDGet()

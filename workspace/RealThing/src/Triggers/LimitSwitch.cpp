@@ -3,7 +3,6 @@
 
 LimitSwitch::LimitSwitch(uint32_t channel) : DigitalInput(channel)
 {
-  WhileHeld(new WinchReset);
 }
 
 bool LimitSwitch::Get()

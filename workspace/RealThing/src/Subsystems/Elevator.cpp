@@ -1,21 +1,26 @@
 #include "Elevator.h"
 #include "../RobotMap.h"
+#include "commands/winchReset.h"
 
 Elevator::Elevator() :
 		Subsystem("Elevator"),
 		winchSpeed(8), // PWM output 8;
 					  // drive uses 0-7.
-		sensor(0),//XXX insert actual dio port for 0
+		sensor(0),//dio port 0
 		ctrlr(1,0,0,&sensor, &winchSpeed),
-		baselmt(2)//XXX insert dio port for 2
+		baselmt(1), //dio port 1
+		brake(0) // port 0
 {
   ctrlr.SetInputRange(0,7);//XXX measure winch travel better
+  ctrlr.SetAbsoluteTolerance(float (1)/256);
+  baselmt.WhileHeld(new WinchReset);
 }
 
 void Elevator::InitDefaultCommand()
 {
 	// Set the default command for a subsystem here.
 	//SetDefaultCommand(new MySpecialCommand());
+  // xxx operator control?
  }
 
 void Elevator::ZeroSensor()
@@ -24,7 +29,24 @@ void Elevator::ZeroSensor()
  }
 
 void Elevator::Runwinch(float wspd)
- {winchSpeed.SetSpeed(wspd);
+//xxx adjust this 1/50 for desired speed
+ {SetTarget(ctrlr.GetSetpoint() + wspd / 50);
+  //winchSpeed.SetSpeed(wspd);
+ }
+
+void Elevator::SetTarget(float tgt)
+ {
+  ctrlr.SetSetpoint(tgt);
+  if(brake.Get() != (Relay::kForward))
+  {brake.Set (Relay::kForward);
+   Wait (.25);
+  }
+  ctrlr.Enable();
+ }
+
+void Elevator::SetBrake()
+ {ctrlr.Disable();
+  brake.Set(Relay::kOff);
  }
 // Put methods for controlling this subsystem
 // here. Call these from Commands.

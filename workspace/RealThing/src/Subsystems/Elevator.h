@@ -16,12 +16,17 @@ private:
   PIDController ctrlr;
   LimitSwitch baselmt;
 //TODO consequences of baselmt pressed- stop winch, reinit sensor
-//TODO joystick runs winch speed, unless button has chosen height
+//TODO joystick runs winch speed, unless _buttons_ have chosen height
+  Relay brake;
 public:
 	Elevator();
 	void InitDefaultCommand();
 	void ZeroSensor();
-  void Runwinch(float);
+  void Runwinch(float); // xxx ???
+  void SetTarget(float); //unsets brake
+   void SetBrake();
+   bool OnTarget() {return ctrlr.OnTarget();}
+   float GetTarget() {return ctrlr.GetSetpoint();}
 };
 
 #endif

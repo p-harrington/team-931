@@ -21,15 +21,16 @@ static const float width  = 21.25; //   "       "
 static const float rot_scale = 1/sqrt(length*length + width*width);
 static const float rot_length = length * rot_scale;
 static const float rot_width  = width  * rot_scale;
+static const complex i = {0,1};
 static const complex rot_vecs[numWheels] =
-  { {rot_length,-rot_width},{-rot_length,-rot_width},
-	{-rot_length,rot_width},{ rot_length, rot_width}};
+  { {-rot_width,  rot_length},{ rot_width,  rot_length},
+	{ rot_width, -rot_length},{-rot_width, -rot_length}};
 
 void SwerveDrive::Drive(float x, float y, float rot, bool align)
  {complex straight(x,y), vecs[numWheels];
 
  for (unsigned n=0; n<numWheels; ++n)
-   {vecs[n] = straight + rot * rot_vecs[n];
+   {vecs[n] = straight + i* rot * rot_vecs[n];
    //SmartDashboard::PutNumber("victor " /*+ std::basic_string(n) + " setting"*/, real(vecs[n]));
    }
  float max = 0;

@@ -18,6 +18,7 @@ private:
    Talon rotSpeed, drvSpeed; /*the motors are cims and pg (34?) .*/
    complex speedGoal;
    static uint32_t ix;
+   uint32_t this_ix;
 /*   size_t GetIx();  */ // I got too clever
    static constexpr double maxVolts = 2.5; // actually 1/2 of 5 V
 	 // The encoder output is wrapped at 2.5 by PIDGet
@@ -26,7 +27,8 @@ private:
    double GetAngle(){return piRatio*encoder.GetVoltage();}
 	public:
    Wheel(): PIDController(1,0,0,this,&rotSpeed),
-	  encoder(ix), rotSpeed(ix/*2*ix+1*/),drvSpeed(numWheels + ix++/*2*ix++*/)
+	  encoder(ix), rotSpeed(ix/*2*ix+1*/),drvSpeed(numWheels + ix/*2*ix++*/),
+	  this_ix(ix++)
 	//, speedGoal(0)
 	 {SetContinuous();
 	  SetInputRange(0, maxVolts);
@@ -42,6 +44,7 @@ public:
 	void InitDefaultCommand();
 /* @param  */
 	void Drive(float, float, float, bool=false);
+	bool OnTarget();
 };
 
 #endif

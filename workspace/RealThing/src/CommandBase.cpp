@@ -24,6 +24,7 @@ void CommandBase::init()
 	// line should be repeated for each subsystem in the project.
 	swerveDrive = new SwerveDrive();
 	elevator = new Elevator();
-
+	SmartDashboard::PutData(swerveDrive);
+	SmartDashboard::PutData(elevator);
 	oi = new OI();
 }

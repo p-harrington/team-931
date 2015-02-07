@@ -26,19 +26,26 @@ static const complex rot_vecs[numWheels] =
   { {-rot_width,  rot_length},{ rot_width,  rot_length},
 	{ rot_width, -rot_length},{-rot_width, -rot_length}};
 
+static const char* wheelnames[] = {"Wheel 0", "Wheel 1", "Wheel 2", "Wheel 3"};
+
 void SwerveDrive::Drive(float x, float y, float rot, bool align)
- {complex straight(x,y), vecs[numWheels];
+ {SmartDashboard::PutNumber("SwerveDrive.Drive x:", x);
+  SmartDashboard::PutNumber("SwerveDrive.Drive y:", y);
+  SmartDashboard::PutNumber("SwerveDrive.Drive rot:", rot);
+  SmartDashboard::PutNumber("SwerveDrive.Drive align:", align);
+   complex straight(x,y), vecs[numWheels];
 
  for (unsigned n=0; n<numWheels; ++n)
    {vecs[n] = straight + i* rot * rot_vecs[n];
-   //SmartDashboard::PutNumber("victor " /*+ std::basic_string(n) + " setting"*/, real(vecs[n]));
-   }
+    //SmartDashboard::PutNumber(wheelnames[n]/*"Talon x" + std::basic_string(n) + " setting"*/, real(vecs[n]));
+    //SmartDashboard::PutNumber("Talon y" /*+ std::basic_string(n) + " setting"*/, imag(vecs[n]));
+       }
  float max = 0;
   for (unsigned n=0; n<numWheels; ++n)
    max = std::max(max, abs(vecs[n]));
   if (max < 1) max = 1;
   for (unsigned n=0; n<numWheels; ++n)
-	wheels[n].Drive(vecs[n] / max, align);
+	wheels[n].Drive(float(n%3?1:-1)*vecs[n] / max, align);
  }
 
 uint32_t SwerveDrive::Wheel::ix = 0;
@@ -55,14 +62,21 @@ void SwerveDrive::Wheel::Drive(complex vec, bool align)
 // encoder.PIDGet() before handing it to Calculate.
 double SwerveDrive::Wheel::PIDGet()
  {double val = encoder.PIDGet();
+ SmartDashboard::PutNumber(wheelnames[this_ix], val);
  // This could be used more effectively
   complex rot_vec = speedGoal *
 	exp(complex(0,-GetAngle()));
   // XXX: maybe have a ramp-up and/or conditional on this
   drvSpeed.Set(real(rot_vec));
   if (val > maxVolts) val -= maxVolts;
-  return val;}
+  return val;
+ }
 
+bool SwerveDrive::OnTarget()
+ {for(unsigned n = 0; n < numWheels; ++n)
+   if(!wheels[n].OnTarget()) return false;
+  return true;
+ }
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 

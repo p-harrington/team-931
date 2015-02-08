@@ -56,20 +56,21 @@ size_t SwerveDrive::Wheel::GetIx()
 
 void SwerveDrive::Wheel::Drive(complex vec, bool align)
  {speedGoal = align?0: vec;
-  SetSetpoint((.5 - atan(real(vec)/imag(vec)) / pi) * maxVolts);}
+  SetSetpoint((.5 + atan(imag(vec)/real(vec)) / pi) * maxRot);}
 
 // I'm using this to do other responses to
 // encoder.PIDGet() before handing it to Calculate.
 double SwerveDrive::Wheel::PIDGet()
  {double val = encoder.PIDGet();
- SmartDashboard::PutNumber(wheelnames[this_ix], val);
+ SmartDashboard::PutNumber(wheelnames[this_ix], GetAngle());
  // This could be used more effectively
   complex rot_vec = speedGoal *
 	exp(complex(0,-GetAngle()));
   // XXX: maybe have a ramp-up and/or conditional on this
   drvSpeed.Set(real(rot_vec));
-  if (val > maxVolts) val -= maxVolts;
-  return val;
+  while (val > maxRot) val -= maxRot;
+  while (val < 0) val += maxRot;
+    return val;
  }
 
 bool SwerveDrive::OnTarget()

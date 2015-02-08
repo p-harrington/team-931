@@ -8,7 +8,7 @@ class Robot: public IterativeRobot
 private:
 	Command *autonomousCommand;
 	LiveWindow *lw;
-	Encoder enc;
+	//Encoder enc;
 	void RobotInit()
 	{
 		CommandBase::init();
@@ -17,7 +17,7 @@ private:
 	}
 	
 	void DisabledPeriodic()
-	{SmartDashboard::PutNumber("encoder", enc.GetDistance());
+	{//SmartDashboard::PutNumber("encoder", enc.GetDistance());
 		Scheduler::GetInstance()->Run();
 	}
 
@@ -52,7 +52,7 @@ private:
 		lw->Run();
 	}
 public:
-	Robot(): enc(8,9){}
+	//Robot(): enc(8,9){}
 };
 
 START_ROBOT_CLASS(Robot);

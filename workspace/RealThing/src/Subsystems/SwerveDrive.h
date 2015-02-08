@@ -14,24 +14,46 @@ private:
 	// Wheel is a private member class, since we don't
 	// expect any more to be created than these.
   class Wheel: public PIDController, public PIDSource
-   {AnalogInput encoder;
+   {
+# if OldEncoder
+   Encoder encoder;
+# else
+   AnalogInput encoder;
+# endif
    Talon rotSpeed, drvSpeed; /*the motors are cims and pg (34?) .*/
    complex speedGoal;
    static uint32_t ix;
    uint32_t this_ix;
 /*   size_t GetIx();  */ // I got too clever
-   static constexpr double maxVolts = 2.5; // actually 1/2 of 5 V
-	 // The encoder output is wrapped at 2.5 by PIDGet
+   static constexpr double maxRot =
+# if OldEncoder
+	 206.75; // actually 1/2 of 413.5 rot
+# else
+     2.5; // 1/2 of 5 Volts
+# endif
+	 // The encoder output is wrapped at 206.75 by PIDGet -CHECK NUMBER!
    static constexpr double pi = M_PI /*3.14159265*/;
-   static constexpr double piRatio = pi/maxVolts;
-   double GetAngle(){return piRatio*encoder.GetVoltage();}
+   static constexpr double piRatio = pi/maxRot;
+   double GetAngle(){return piRatio*encoder.
+# if OldEncoder
+	 GetDistance();
+# else
+	 GetVoltage();
+# endif
+   }
 	public:
-   Wheel(): PIDController(1,0,0,this,&rotSpeed),
-	  encoder(ix), rotSpeed(ix/*2*ix+1*/),drvSpeed(numWheels + ix/*2*ix++*/),
+   Wheel(): PIDController(.02,0,0,this,&rotSpeed),
+# if OldEncoder
+	  encoder(2*ix,2*ix+1),
+# else
+	  encoder(ix),
+# endif
+	  rotSpeed(ix/*2*ix+1*/),drvSpeed(numWheels + ix/*2*ix++*/),
 	  this_ix(ix++)
 	//, speedGoal(0)
 	 {SetContinuous();
-	  SetInputRange(0, maxVolts);
+	  SetInputRange(0, maxRot);
+	  SetPercentTolerance(12.5);
 	  Enable();}
    void Drive(complex, bool);
    //void SetSpeedGoal(float);

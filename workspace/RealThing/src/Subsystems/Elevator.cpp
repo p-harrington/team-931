@@ -6,9 +6,9 @@ Elevator::Elevator() :
 		Subsystem("Elevator"),
 		winchSpeed(8), // PWM output 8;
 					  // drive uses 0-7.
-		sensor(0),//dio port 0
+		sensor(8),//dio port 0
 		ctrlr(1,0,0,&sensor, &winchSpeed),
-		baselmt(1), //dio port 1
+		baselmt(9), //dio port 1
 		brake(0) // port 0
 {
   ctrlr.SetInputRange(0,7);//XXX measure winch travel better

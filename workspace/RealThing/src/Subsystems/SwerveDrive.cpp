@@ -33,7 +33,8 @@ void SwerveDrive::Drive(float x, float y, float rot, bool align)
   SmartDashboard::PutNumber("SwerveDrive.Drive y:", y);
   SmartDashboard::PutNumber("SwerveDrive.Drive rot:", rot);
   SmartDashboard::PutNumber("SwerveDrive.Drive align:", align);
-   complex straight(x,y), vecs[numWheels];
+   complex straight(-x,y), vecs[numWheels];
+   straight *= abs(straight); // makes small motions smaller
 
  for (unsigned n=0; n<numWheels; ++n)
    {vecs[n] = straight + i* rot * rot_vecs[n];
@@ -45,7 +46,7 @@ void SwerveDrive::Drive(float x, float y, float rot, bool align)
    max = std::max(max, abs(vecs[n]));
   if (max < 1) max = 1;
   for (unsigned n=0; n<numWheels; ++n)
-	wheels[n].Drive(float(n%3?1:-1)*vecs[n] / max, align);
+	wheels[n].Drive(float(n==2?1:-1)*vecs[n] / max, align);
  }
 
 uint32_t SwerveDrive::Wheel::ix = 0;
@@ -67,7 +68,7 @@ double SwerveDrive::Wheel::PIDGet()
   complex rot_vec = speedGoal *
 	exp(complex(0,-GetAngle()));
   // XXX: maybe have a ramp-up and/or conditional on this
-  drvSpeed.Set(real(rot_vec));
+  drvSpeed.Set(imag(rot_vec));
   while (val > maxRot) val -= maxRot;
   while (val < 0) val += maxRot;
     return val;
@@ -77,6 +78,11 @@ bool SwerveDrive::OnTarget()
  {for(unsigned n = 0; n < numWheels; ++n)
    if(!wheels[n].OnTarget()) return false;
   return true;
+ }
+
+void SwerveDrive::SetPID(float P, float I, float D)
+ {for(unsigned n = 0; n < numWheels; ++n)
+   wheels[n].SetPID(P, I, D);
  }
 // Put methods for controlling this subsystem
 // here. Call these from Commands.

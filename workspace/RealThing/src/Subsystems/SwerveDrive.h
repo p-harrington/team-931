@@ -4,6 +4,7 @@
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 #include "complex"
+# define OldEncoder 0
 typedef std::complex<float> complex;
 
 static const unsigned numWheels=4;
@@ -42,7 +43,7 @@ private:
 # endif
    }
 	public:
-   Wheel(): PIDController(.02,0,0,this,&rotSpeed),
+   Wheel(): PIDController(maxRot/2, 0, 0, this,&rotSpeed),
 # if OldEncoder
 	  encoder(2*ix,2*ix+1),
 # else
@@ -64,9 +65,14 @@ private:
 public:
 	SwerveDrive();
 	void InitDefaultCommand();
-/* @param  */
+/** @param leftright motion **/
 	void Drive(float, float, float, bool=false);
 	bool OnTarget();
+	float GetP(), GetI(), GetD();
+	void SetPID(float, float, float);
 };
 
+inline float SwerveDrive::GetP(){return wheels[0].GetP();}
+inline float SwerveDrive::GetI(){return wheels[0].GetI();}
+inline float SwerveDrive::GetD(){return wheels[0].GetD();}
 #endif

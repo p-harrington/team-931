@@ -12,7 +12,7 @@ private:
 	void RobotInit()
 	{
 		CommandBase::init();
-		autonomousCommand = new TeleopDrive();
+		autonomousCommand = new TeleopDrive(); //TODO: real autonomous
 		lw = LiveWindow::GetInstance();
 	}
 	

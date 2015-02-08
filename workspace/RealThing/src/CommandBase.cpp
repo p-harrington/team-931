@@ -1,6 +1,7 @@
 #include <Subsystems/SwerveDrive.h>
 #include "CommandBase.h"
 #include "Commands/Scheduler.h"
+#include "Commands/PIDAdjust.h"
 
 // Initialize a single static instance of all of your subsystems to NULL
 SwerveDrive* CommandBase::swerveDrive = NULL;
@@ -25,6 +26,10 @@ void CommandBase::init()
 	swerveDrive = new SwerveDrive();
 	elevator = new Elevator();
 	SmartDashboard::PutData(swerveDrive);
+	SmartDashboard::PutData(new PIDAdjust);
+//	SmartDashboard::PutNumber("Drive P", .125);
+//	SmartDashboard::PutNumber("Drive I", 0);
+//	SmartDashboard::PutNumber("Drive D", 0);
 	SmartDashboard::PutData(elevator);
 	oi = new OI();
 }

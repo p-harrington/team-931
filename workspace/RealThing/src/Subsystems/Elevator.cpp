@@ -19,7 +19,7 @@ Elevator::Elevator() :
 void Elevator::InitDefaultCommand()
 {
 	// Set the default command for a subsystem here.
-	//SetDefaultCommand(new MySpecialCommand());
+	SetDefaultCommand(new OperateElevator());
   // xxx operator control?
  }
 

@@ -4,7 +4,8 @@
 # include <cfenv> // for FE_DIVBYZERO
 
 SwerveDrive::SwerveDrive() :
-		Subsystem("SwerveDrive")
+		Subsystem("SwerveDrive"),
+		speedface(false)
 {fedisableexcept (FE_DIVBYZERO);}
 
 void SwerveDrive::InitDefaultCommand()
@@ -33,11 +34,16 @@ void SwerveDrive::Drive(float x, float y, float rot, bool align)
   SmartDashboard::PutNumber("SwerveDrive.Drive y:", y);
   SmartDashboard::PutNumber("SwerveDrive.Drive rot:", rot);
   SmartDashboard::PutNumber("SwerveDrive.Drive align:", align);
-   complex straight(-x,y), vecs[numWheels];
+  SmartDashboard::PutBoolean("SwerveDrive.Toggle stat", speedface);
+  complex straight(-x,y), vecs[numWheels];
    straight *= abs(straight); // makes small motions smaller
+   //rot *= abs(rot); //same reason above
+   if(speedface) straight *= .3, rot *= .3;
+//   if(abs(rot) >=.85) oi->DriveStick();
 
  for (unsigned n=0; n<numWheels; ++n)
    {vecs[n] = straight + i* rot * rot_vecs[n];
+    if(n&2) vecs[n] *= .95; // ad hoc try to even up
     //SmartDashboard::PutNumber(wheelnames[n]/*"Talon x" + std::basic_string(n) + " setting"*/, real(vecs[n]));
     //SmartDashboard::PutNumber("Talon y" /*+ std::basic_string(n) + " setting"*/, imag(vecs[n]));
        }

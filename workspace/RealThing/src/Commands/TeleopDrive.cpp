@@ -17,8 +17,8 @@ void TeleopDrive::Execute()
   Joystick & joy = oi->DriveStick();
   swerveDrive->Drive(joy.GetX(Joystick::kLeftHand),
 	joy.GetY(Joystick::kLeftHand),
-	/*joy.GetX(Joystick::kRightHand)*/joy.GetRawAxis(4),
-	joy.GetRawButton(5));//in case of realignment;5 is top left button
+	/*joy.GetX(Joystick::kRightHand)*/joy.GetRawAxis(4)/*,
+	joy.GetRawButton(5)*/);//in case of realignment;5 is top left button
 }
 
 // Make this return true when this Command no longer needs to run execute()

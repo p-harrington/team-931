@@ -12,6 +12,7 @@ static const unsigned numWheels=4;
 class SwerveDrive: public Subsystem
 {
 private:
+  bool speedface;
 	// Wheel is a private member class, since we don't
 	// expect any more to be created than these.
   class Wheel: public PIDController, public PIDSource
@@ -43,7 +44,7 @@ private:
 # endif
    }
 	public:
-   Wheel(): PIDController(maxRot/2, 0, 0, this,&rotSpeed),
+   Wheel(): PIDController(2/maxRot, 0, 0, this,&rotSpeed),
 # if OldEncoder
 	  encoder(2*ix,2*ix+1),
 # else
@@ -54,7 +55,7 @@ private:
 	//, speedGoal(0)
 	 {SetContinuous();
 	  SetInputRange(0, maxRot);
-	  SetPercentTolerance(12.5);
+	  SetPercentTolerance((float)100/32);
 	  Enable();}
    void Drive(complex, bool);
    //void SetSpeedGoal(float);
@@ -68,10 +69,12 @@ public:
 /** @param leftright motion **/
 	void Drive(float, float, float, bool=false);
 	bool OnTarget();
+	void Toggler();
 	float GetP(), GetI(), GetD();
 	void SetPID(float, float, float);
 };
 
+inline void SwerveDrive::Toggler(){speedface=!speedface;}
 inline float SwerveDrive::GetP(){return wheels[0].GetP();}
 inline float SwerveDrive::GetI(){return wheels[0].GetI();}
 inline float SwerveDrive::GetD(){return wheels[0].GetD();}

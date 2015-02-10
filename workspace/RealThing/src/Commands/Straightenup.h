@@ -15,4 +15,16 @@ public:
 	void Interrupted();
 };
 
+class SpeedToggle: public CommandBase
+{
+public:
+	SpeedToggle();
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
+};
+
+
 #endif

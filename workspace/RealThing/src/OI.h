@@ -7,11 +7,14 @@ class OI
 {
 private:
   Joystick driveStick, elevStick;
-  JoystickButton straightenup;
+  JoystickButton straightenup,
+   speeder,
+   elevUp, elevDown;
 public:
 	OI();
 	Joystick & DriveStick(), &ElevStick();
 	JoystickButton & Straightenup();
+	JoystickButton & Speeder();
 };
 
 inline Joystick & OI::DriveStick()
@@ -22,4 +25,7 @@ inline Joystick & OI::ElevStick()
 
 inline JoystickButton & OI::Straightenup()
  {return straightenup;}
+
+inline JoystickButton & OI::Speeder()
+ {return speeder;}
 #endif

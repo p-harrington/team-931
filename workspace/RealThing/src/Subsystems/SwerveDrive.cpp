@@ -29,6 +29,11 @@ static const complex rot_vecs[numWheels] =
 
 static const char* wheelnames[] = {"Wheel 0", "Wheel 1", "Wheel 2", "Wheel 3"};
 
+static float sloper(float rotx){
+  if(abs(rotx) *3 < 1) return 2*rotx;
+  return (2* rotx +(rotx >0 ? -1:1));
+}
+
 void SwerveDrive::Drive(float x, float y, float rot, bool align)
  {SmartDashboard::PutNumber("SwerveDrive.Drive x:", x);
   SmartDashboard::PutNumber("SwerveDrive.Drive y:", y);
@@ -37,8 +42,8 @@ void SwerveDrive::Drive(float x, float y, float rot, bool align)
   SmartDashboard::PutBoolean("SwerveDrive.Toggle stat", speedface);
   complex straight(-x,y), vecs[numWheels];
    straight *= abs(straight); // makes small motions smaller
-   //rot *= abs(rot); //same reason above
    if(speedface) straight *= .3, rot *= .3;
+   rot = sloper(rot); //same reason above
 //   if(abs(rot) >=.85) oi->DriveStick();
 
  for (unsigned n=0; n<numWheels; ++n)

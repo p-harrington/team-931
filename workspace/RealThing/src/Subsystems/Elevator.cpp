@@ -1,6 +1,7 @@
 #include "Elevator.h"
 #include "../RobotMap.h"
 #include "commands/winchReset.h"
+#include "commands/MoveElevator.h"
 
 Elevator::Elevator() :
 		Subsystem("Elevator"),

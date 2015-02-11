@@ -9,6 +9,11 @@
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
+
+const float toteHeight = 12.1, // inches
+ winchCorrection = 6, // xxx really? inches per rotation
+ levelSize = toteHeight / winchCorrection;
+
  
 // For example to map the left and right motors, you could define the
 // following variables to use with your drivetrain subsystem.

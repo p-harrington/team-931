@@ -8,8 +8,9 @@ static size_t level = 0,
   incLevel(), decLevel();
 
 OI::OI() : driveStick(1), elevStick(2),
+  // driveStick must be Gamepad, elevStick logitech
  straightenup(&driveStick, 6), speeder(&driveStick, 5),
- elevUp(&elevStick, 4), elevDown(&elevStick, 1)
+ elevUp(&elevStick, 4), elevDown(&elevStick, 2)
 {
 	// Process operator interface input here.
   straightenup.WhileHeld(new ::Straightenup);

@@ -44,7 +44,17 @@ private:
 
 	void TeleopPeriodic()
 	{
-		Scheduler::GetInstance()->Run();
+# if 1
+	  if(CommandBase::oi->ElevStick().GetRawButton(1))
+	  {CommandBase::elevator->Brake().Set(Relay::kForward);
+	   SmartDashboard::PutString("Brake", "on");}
+	 if(CommandBase::oi->ElevStick().GetRawButton(3))
+	  {CommandBase::elevator->Brake().Set(Relay::kOff);
+	   SmartDashboard::PutString("Brake", "off");}
+	 SmartDashboard::PutBoolean("sensor bad",
+	   CommandBase::elevator->Sensor().IsBad());
+# endif
+	 Scheduler::GetInstance()->Run();
 	}
 
 	void TestPeriodic()

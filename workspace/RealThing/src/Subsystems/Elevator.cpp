@@ -30,14 +30,22 @@ void Elevator::ZeroSensor()
  }
 
 void Elevator::Runwinch(float wspd)
+#if 0
 //xxx adjust this 1/50 for desired speed
  {SetTarget(ctrlr.GetSetpoint() + wspd / 50);
   //winchSpeed.SetSpeed(wspd);
  }
-
+#else
+{SmartDashboard::PutNumber("new winch", wspd);
+ Run(wspd);}
+#endif
 void Elevator::SetTarget(float tgt)
  {
   ctrlr.SetSetpoint(tgt);
+  SmartDashboard::PutNumber("winch setting", sensor.PIDGet());
+  SmartDashboard::PutNumber("winch setpoint", tgt);
+  SmartDashboard::PutNumber("ctrlr enabled", ctrlr.IsEnabled());
+  SmartDashboard::PutNumber("brake setting", brake.Get());
   if(brake.Get() != (Relay::kForward))
   {brake.Set (Relay::kForward);
    Wait (.25);
@@ -51,3 +59,4 @@ void Elevator::SetBrake()
  }
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
+void Elevator::Run(float x) {winchSpeed.Set(x);}

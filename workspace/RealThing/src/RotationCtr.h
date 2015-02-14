@@ -19,6 +19,7 @@ class RotationCtr : public PIDSource
   virtual ~RotationCtr();
   void Init();
   double PIDGet();
+  bool IsBad();
  };
 
 #endif /* SRC_ROTATIONCTR_H_ */

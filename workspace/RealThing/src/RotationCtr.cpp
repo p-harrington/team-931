@@ -9,7 +9,7 @@
 
 RotationCtr::RotationCtr(uint32_t channel) :
   angle(channel, 256), // using as5030 -- 256 outputs
-  rotCtr(0)
+  firstAngle(0), lastAngle(0), rotCtr(0)
  {}
 
 RotationCtr::~RotationCtr()
@@ -34,4 +34,8 @@ double RotationCtr::PIDGet()
    -- rotCtr;
   lastAngle = newAngle;
   return newAngle - firstAngle + rotCtr;
+ }
+
+bool RotationCtr::IsBad()
+ {return angle.IsBad();
  }

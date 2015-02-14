@@ -31,15 +31,15 @@ static const char* wheelnames[] = {"Wheel 0", "Wheel 1", "Wheel 2", "Wheel 3"};
 
 static float sloper(float rotx){
   if(abs(rotx) *3 < 1) return 2*rotx;
-  return (2* rotx +(rotx >0 ? -1:1));
+  return (rotx +(rotx >0 ? 1: -1))/2;
 }
 
 void SwerveDrive::Drive(float x, float y, float rot, bool align)
- {SmartDashboard::PutNumber("SwerveDrive.Drive x:", x);
+ {/*SmartDashboard::PutNumber("SwerveDrive.Drive x:", x);
   SmartDashboard::PutNumber("SwerveDrive.Drive y:", y);
   SmartDashboard::PutNumber("SwerveDrive.Drive rot:", rot);
   SmartDashboard::PutNumber("SwerveDrive.Drive align:", align);
-  SmartDashboard::PutBoolean("SwerveDrive.Toggle stat", speedface);
+  SmartDashboard::PutBoolean("SwerveDrive.Toggle stat", speedface);*/
   complex straight(-x,y), vecs[numWheels];
    straight *= abs(straight); // makes small motions smaller
    if(speedface) straight *= .3, rot *= .3;
@@ -48,7 +48,7 @@ void SwerveDrive::Drive(float x, float y, float rot, bool align)
 
  for (unsigned n=0; n<numWheels; ++n)
    {vecs[n] = straight + i* rot * rot_vecs[n];
-    if(n&2) vecs[n] *= .95; // ad hoc try to even up
+    if(n&2) vecs[n] *= .80; // ad hoc try to even up
     //SmartDashboard::PutNumber(wheelnames[n]/*"Talon x" + std::basic_string(n) + " setting"*/, real(vecs[n]));
     //SmartDashboard::PutNumber("Talon y" /*+ std::basic_string(n) + " setting"*/, imag(vecs[n]));
        }

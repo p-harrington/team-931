@@ -62,7 +62,7 @@ void OperateElevator::Initialize()
  }
 
 void OperateElevator::Execute()
- {elevator->Runwinch(oi->DriveStick().GetY());
+ {elevator->Runwinch(oi->ElevStick().GetY());
  }
 
 bool OperateElevator::IsFinished()

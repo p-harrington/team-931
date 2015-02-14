@@ -24,6 +24,7 @@ class PWMInput: public PIDSource
   double bareInput();
   double PIDGet();
   unsigned input();
+  bool IsBad();
  };
 
 #endif /* SRC_PWMINPUT_H_ */

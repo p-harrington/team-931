@@ -9,7 +9,8 @@ private:
   Joystick driveStick, elevStick;
   JoystickButton straightenup,
    speeder,
-   elevUp, elevDown;
+   elevUp, elevDown,
+   elevStop;
 public:
 	OI();
 	Joystick & DriveStick(), &ElevStick();

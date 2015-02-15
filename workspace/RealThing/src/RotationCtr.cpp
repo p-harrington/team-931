@@ -32,6 +32,10 @@ double RotationCtr::PIDGet()
    ++ rotCtr;
   else if (newAngle > near1 && lastAngle <= near0)
    -- rotCtr;
+  SmartDashboard::PutNumber("new angle", newAngle);
+  SmartDashboard::PutNumber("last angle", lastAngle);
+  SmartDashboard::PutNumber("first angle", firstAngle);
+
   lastAngle = newAngle;
   return newAngle - firstAngle + rotCtr;
  }

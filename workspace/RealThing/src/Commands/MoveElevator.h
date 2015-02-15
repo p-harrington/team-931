@@ -40,4 +40,12 @@ public:
 	void Initialize();
 };
 
+struct StopElev: CommandBase
+ {	StopElev();
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
+};
 #endif

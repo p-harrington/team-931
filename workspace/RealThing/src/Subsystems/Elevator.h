@@ -28,6 +28,7 @@ public:
    bool OnTarget() {return ctrlr.OnTarget();}
    float GetTarget() {return ctrlr.GetSetpoint();}
    void Run(float);
+   void StopHere();
 # if 1
    Relay& Brake() {return brake;}
    RotationCtr& Sensor() {return sensor;}

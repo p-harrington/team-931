@@ -7,10 +7,10 @@ Elevator::Elevator() :
 		Subsystem("Elevator"),
 		winchSpeed(8), // PWM output 8;
 					  // drive uses 0-7.
-		sensor(8),//dio port 0
-		ctrlr(1,0,0,&sensor, &winchSpeed),
-		baselmt(9), //dio port 1
-		brake(0) // port 0
+		sensor(8),//dio port 8
+		ctrlr(-1,0,0,&sensor, &winchSpeed),
+		baselmt(9), //dio port 9
+		brake(0) // relay port 0
 {
   ctrlr.SetInputRange(0,7);//XXX measure winch travel better
   ctrlr.SetAbsoluteTolerance(float (1)/256);
@@ -26,11 +26,11 @@ void Elevator::InitDefaultCommand()
 
 void Elevator::ZeroSensor()
  {
-  sensor.Init();
+ // sensor.Init();
  }
 
 void Elevator::Runwinch(float wspd)
-#if 0
+#if 1
 //xxx adjust this 1/50 for desired speed
  {SetTarget(ctrlr.GetSetpoint() + wspd / 50);
   //winchSpeed.SetSpeed(wspd);
@@ -59,4 +59,12 @@ void Elevator::SetBrake()
  }
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
-void Elevator::Run(float x) {winchSpeed.Set(x);}
+void Elevator::Run(float x)
+ {
+  winchSpeed.Set(x);
+ }
+
+void Elevator::StopHere()
+ {ctrlr.SetSetpoint(sensor.PIDGet());
+  SetBrake();
+ }

@@ -34,7 +34,8 @@ double PWMInput::bareInput()
  }
 
 double PWMInput::PIDGet()
- {return bareInput() / maxval;
+ {//SmartDashboard::PutNumber("PWMInput", bareInput());
+  return 1 - bareInput() / maxval;
  }
 
 unsigned PWMInput::input()
@@ -42,8 +43,8 @@ unsigned PWMInput::input()
  }
 
 bool PWMInput::IsBad()
- {/*SmartDashboard::PutNumber("sensor", rawsource.Get());
-  SmartDashboard::PutNumber("sensor up", rawsource.ReadRisingTimestamp());
+ {SmartDashboard::PutNumber("sensor source", rawsource.Get());
+/*  SmartDashboard::PutNumber("sensor up", rawsource.ReadRisingTimestamp());
   SmartDashboard::PutNumber("sensor down", rawsource.ReadFallingTimestamp());
 */
  return updown.GetStopped();

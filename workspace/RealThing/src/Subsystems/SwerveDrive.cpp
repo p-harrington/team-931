@@ -41,14 +41,14 @@ void SwerveDrive::Drive(float x, float y, float rot, bool align)
   SmartDashboard::PutNumber("SwerveDrive.Drive align:", align);
   SmartDashboard::PutBoolean("SwerveDrive.Toggle stat", speedface);*/
   complex straight(-x,y), vecs[numWheels];
-   straight *= abs(straight); // makes small motions smaller
-   if(speedface) straight *= .3, rot *= .3;
+   //straight *= norm(straight); // makes small motions smaller
+   if(speedface) straight *= .75, rot *= .3;
    rot = sloper(rot); //same reason above
 //   if(abs(rot) >=.85) oi->DriveStick();
 
  for (unsigned n=0; n<numWheels; ++n)
    {vecs[n] = straight + i* rot * rot_vecs[n];
-    if(n&2) vecs[n] *= .80; // ad hoc try to even up
+    //if(n&2) vecs[n] *= .90; // ad hoc try to even up
     //SmartDashboard::PutNumber(wheelnames[n]/*"Talon x" + std::basic_string(n) + " setting"*/, real(vecs[n]));
     //SmartDashboard::PutNumber("Talon y" /*+ std::basic_string(n) + " setting"*/, imag(vecs[n]));
        }

@@ -76,3 +76,27 @@ void OperateElevator::End()
 void OperateElevator::Interrupted()
  {
  }
+
+StopElev::StopElev()
+ {Requires(elevator);
+ }
+
+void StopElev::Initialize()
+ {elevator->StopHere();
+ }
+
+void StopElev::Execute()
+ {
+ }
+
+bool StopElev::IsFinished()
+ {return true;
+ }
+
+void StopElev::End()
+ {
+ }
+
+void StopElev::Interrupted()
+ {
+ }

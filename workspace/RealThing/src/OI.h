@@ -8,14 +8,18 @@ class OI
 private:
   Joystick driveStick, elevStick;
   JoystickButton straightenup,
-   speeder,
+# if ! usingnewstick
+  speeder,
+# endif
    elevUp, elevDown,
    elevStop;
 public:
 	OI();
 	Joystick & DriveStick(), &ElevStick();
 	JoystickButton & Straightenup();
+# if ! usingnewstick
 	JoystickButton & Speeder();
+# endif
 };
 
 inline Joystick & OI::DriveStick()
@@ -27,6 +31,8 @@ inline Joystick & OI::ElevStick()
 inline JoystickButton & OI::Straightenup()
  {return straightenup;}
 
+# if ! usingnewstick
 inline JoystickButton & OI::Speeder()
  {return speeder;}
+# endif
 #endif

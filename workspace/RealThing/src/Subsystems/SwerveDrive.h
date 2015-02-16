@@ -4,6 +4,8 @@
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 #include "complex"
+# define newdrivestick 1
+//#include "CommandBase.h"
 # define OldEncoder 0
 typedef std::complex<float> complex;
 
@@ -12,8 +14,10 @@ static const unsigned numWheels=4;
 class SwerveDrive: public Subsystem
 {
 private:
+# if ! newdrivestick
   bool speedface;
-	// Wheel is a private member class, since we don't
+# endif
+  // Wheel is a private member class, since we don't
 	// expect any more to be created than these.
   class Wheel: public PIDController, public PIDSource
    {
@@ -67,14 +71,19 @@ public:
 	SwerveDrive();
 	void InitDefaultCommand();
 /** @param leftright motion **/
-	void Drive(float, float, float, bool=false);
+	void Drive(float x, float y, float twist,
+	  float throttle, bool=false);
 	bool OnTarget();
+# if ! newdrivestick
 	void Toggler();
+# endif
 	float GetP(), GetI(), GetD();
 	void SetPID(float, float, float);
 };
 
+# if ! newdrivestick
 inline void SwerveDrive::Toggler(){speedface=!speedface;}
+# endif
 inline float SwerveDrive::GetP(){return wheels[0].GetP();}
 inline float SwerveDrive::GetI(){return wheels[0].GetI();}
 inline float SwerveDrive::GetD(){return wheels[0].GetD();}

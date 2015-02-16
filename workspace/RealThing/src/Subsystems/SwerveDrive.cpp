@@ -1,11 +1,12 @@
 #include <Subsystems/SwerveDrive.h>
-#include "CommandBase.h"
 # include "Commands/TeleopDrive.h"
 # include <cfenv> // for FE_DIVBYZERO
 
 SwerveDrive::SwerveDrive() :
-		Subsystem("SwerveDrive"),
-		speedface(false)
+		Subsystem("SwerveDrive")
+# if ! newdrivestick
+,		speedface(false)
+# endif
 {fedisableexcept (FE_DIVBYZERO);}
 
 void SwerveDrive::InitDefaultCommand()
@@ -29,12 +30,14 @@ static const complex rot_vecs[numWheels] =
 
 static const char* wheelnames[] = {"Wheel 0", "Wheel 1", "Wheel 2", "Wheel 3"};
 
+# if ! newdrivestick
 static float sloper(float rotx){
   if(abs(rotx) *3 < 1) return 2*rotx;
   return (rotx +(rotx >0 ? 1: -1))/2;
 }
+# endif
 
-void SwerveDrive::Drive(float x, float y, float rot, bool align)
+void SwerveDrive::Drive(float x, float y, float rot, float throttle, bool align)
  {/*SmartDashboard::PutNumber("SwerveDrive.Drive x:", x);
   SmartDashboard::PutNumber("SwerveDrive.Drive y:", y);
   SmartDashboard::PutNumber("SwerveDrive.Drive rot:", rot);
@@ -42,8 +45,13 @@ void SwerveDrive::Drive(float x, float y, float rot, bool align)
   SmartDashboard::PutBoolean("SwerveDrive.Toggle stat", speedface);*/
   complex straight(-x,y), vecs[numWheels];
    //straight *= norm(straight); // makes small motions smaller
-   if(speedface) straight *= .75, rot *= .3;
+# if ! newdrivestick
+  if(speedface)
+# endif
+   straight *= throttle, rot *= throttle/2;
+# if ! newdrivestick
    rot = sloper(rot); //same reason above
+# endif
 //   if(abs(rot) >=.85) oi->DriveStick();
 
  for (unsigned n=0; n<numWheels; ++n)

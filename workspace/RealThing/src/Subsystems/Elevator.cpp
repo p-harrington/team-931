@@ -8,13 +8,12 @@ Elevator::Elevator() :
 		winchSpeed(8), // PWM output 8;
 					  // drive uses 0-7.
 		sensor(8),//dio port 8
-		ctrlr(-1,0,0,&sensor, &winchSpeed),
+		ctrlr(-3,0,0,&sensor, &winchSpeed), // XXX adjust here
 		baselmt(9), //dio port 9
 		brake(0) // relay port 0
 {
-  ctrlr.SetInputRange(0,7);//XXX measure winch travel better
-  ctrlr.SetAbsoluteTolerance(float (1)/256);
-  baselmt.WhileHeld(new WinchReset);
+  ctrlr.SetAbsoluteTolerance(float (16)/256);
+  baselmt.WhenInactive(new WinchReset);
 }
 
 void Elevator::InitDefaultCommand()
@@ -25,14 +24,16 @@ void Elevator::InitDefaultCommand()
  }
 
 void Elevator::ZeroSensor()
- {
- // sensor.Init();
+ {ctrlr.Reset();
+  ctrlr.SetInputRange(0,6);//XXX measure winch travel better
+  ctrlr.SetSetpoint(ctrlr.GetSetpoint());
+  sensor.Init();
  }
 
 void Elevator::Runwinch(float wspd)
 #if 1
-//xxx adjust this 1/50 for desired speed
- {SetTarget(ctrlr.GetSetpoint() + wspd / 50);
+// adjust this 1/35 for desired speed, - sign
+ {SetTarget(ctrlr.GetSetpoint() - wspd / 35);
   //winchSpeed.SetSpeed(wspd);
  }
 #else

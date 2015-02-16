@@ -9,14 +9,19 @@ static size_t level = 0,
   incLevel(), decLevel();
 
 OI::OI() : driveStick(1), elevStick(2),
+  straightenup(&driveStick, 6),
+# if ! usingnewstick
   // driveStick must be Gamepad, elevStick logitech
- straightenup(&driveStick, 6), speeder(&driveStick, 5),
+ speeder(&driveStick, 5),
+# endif
  elevUp(&elevStick, 4), elevDown(&elevStick, 2),
  elevStop(&elevStick, 10)
 {
 	// Process operator interface input here.
   straightenup.WhileHeld(new ::Straightenup);
+# if ! newdrivestick
   speeder.WhenPressed(new ::SpeedToggle);
+# endif
   elevUp.WhenPressed(new ::MoveElevatorTo(elevLevels[incLevel()]));
   elevDown.WhenPressed(new ::MoveElevatorTo(elevLevels[decLevel()]));
   elevStop.WhenPressed(new ::StopElev);

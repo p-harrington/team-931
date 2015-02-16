@@ -11,7 +11,7 @@
  */
 
 const float toteHeight = 12.1, // inches
- winchCorrection = 6, // xxx really? inches per rotation
+ winchCorrection = 7.46, // xxx really? inches per rotation
  levelSize = toteHeight / winchCorrection;
 
  

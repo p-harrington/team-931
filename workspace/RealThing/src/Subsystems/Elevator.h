@@ -32,6 +32,7 @@ public:
 # if 1
    Relay& Brake() {return brake;}
    RotationCtr& Sensor() {return sensor;}
+   LimitSwitch& Limit() {return baselmt;}
 # endif
 };
 

@@ -14,7 +14,7 @@ public:
 	void End();
 	void Interrupted();
 };
-
+# if ! newdrivestick
 class SpeedToggle: public CommandBase
 {
 public:
@@ -25,6 +25,6 @@ public:
 	void End();
 	void Interrupted();
 };
-
+# endif
 
 #endif

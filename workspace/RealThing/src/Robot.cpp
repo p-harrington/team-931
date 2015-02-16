@@ -51,8 +51,11 @@ private:
 	 if(CommandBase::oi->ElevStick().GetRawButton(3))
 	  {CommandBase::elevator->Brake().Set(Relay::kOff);
 	   SmartDashboard::PutString("Brake", "off");}
-	 SmartDashboard::PutBoolean("sensor bad",
+	 SmartDashboard::PutNumber("LimitSwitch",
+	   CommandBase::elevator->Limit().Get());
+/*	 SmartDashboard::PutBoolean("sensor bad",
 	   CommandBase::elevator->Sensor().IsBad());
+*/
 # endif
 	 Scheduler::GetInstance()->Run();
 	}

@@ -38,7 +38,7 @@ void Straightenup::Interrupted()
 {
 
 }
-
+# if ! newdrivestick
 SpeedToggle::SpeedToggle()
 {
 	// Use Requires() here to declare subsystem dependencies
@@ -74,3 +74,4 @@ void SpeedToggle::End()
 void SpeedToggle::Interrupted()
 {
 }
+# endif

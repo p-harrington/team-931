@@ -10,14 +10,21 @@ void TeleopDrive::Initialize()
 {
 
 }
-
+const float minThrottle = .4;
 // Called repeatedly when this Command is scheduled to run
 void TeleopDrive::Execute()
 {
   Joystick & joy = oi->DriveStick();
   swerveDrive->Drive(joy.GetX(Joystick::kLeftHand),
 	joy.GetY(Joystick::kLeftHand),
-	/*joy.GetX(Joystick::kRightHand)*/joy.GetRawAxis(4)/*,
+# if newdrivestick
+	joy.GetTwist(),
+	(minThrottle + 1 + (minThrottle - 1) * joy.GetThrottle())/2
+# else
+	/*joy.GetX(Joystick::kRightHand)*/joy.GetRawAxis(4),
+	.5
+# endif
+	/*,
 	joy.GetRawButton(5)*/);//in case of realignment;5 is top left button
 }
 

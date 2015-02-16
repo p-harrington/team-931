@@ -15,7 +15,7 @@ class RotationCtr : public PIDSource
   double firstAngle, lastAngle;
 
  public:
-  RotationCtr(uint32_t channel);
+  RotationCtr(uint32_t channel, unsigned max, bool reversed = false);
   virtual ~RotationCtr();
   void Init();
   double PIDGet();

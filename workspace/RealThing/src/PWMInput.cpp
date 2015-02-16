@@ -7,11 +7,12 @@
 
 #include <PWMInput.h>
 
-PWMInput::PWMInput(uint32_t channel, unsigned max) :
+PWMInput::PWMInput(uint32_t channel, unsigned max, bool reversed) :
    rawsource(channel),
    updown(rawsource),
    downup(rawsource),
-   maxval(max)
+   maxval(max),
+   reversed(reversed)
  {updown.SetSemiPeriodMode(true);
 # if NotNewIdea // New idea, old way kept for reference
   downup.SetSemiPeriodMode(false);
@@ -20,7 +21,7 @@ PWMInput::PWMInput(uint32_t channel, unsigned max) :
 
 PWMInput::~PWMInput()
  {
-  // TODO Auto-generated destructor stub
+  // Auto-generated destructor stub
  }
 
 double PWMInput::bareInput()
@@ -34,8 +35,8 @@ double PWMInput::bareInput()
  }
 
 double PWMInput::PIDGet()
- {//SmartDashboard::PutNumber("PWMInput", bareInput());
-  return 1 - bareInput() / maxval;
+ {
+  return reversed ? 1 - bareInput() / maxval : bareInput() / maxval;
  }
 
 unsigned PWMInput::input()

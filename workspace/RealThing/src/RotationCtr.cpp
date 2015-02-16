@@ -7,8 +7,8 @@
 
 #include <RotationCtr.h>
 
-RotationCtr::RotationCtr(uint32_t channel) :
-  angle(channel, 256), // using as5030 -- 256 outputs
+RotationCtr::RotationCtr(uint32_t channel, unsigned max, bool reversed) :
+  angle(channel, max, reversed), // using as5030 -- 256 outputs
   firstAngle(0), lastAngle(0), rotCtr(0)
  {}
 

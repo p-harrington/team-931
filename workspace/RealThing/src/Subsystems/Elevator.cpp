@@ -7,7 +7,7 @@ Elevator::Elevator() :
 		Subsystem("Elevator"),
 		winchSpeed(8), // PWM output 8;
 					  // drive uses 0-7.
-		sensor(8),//dio port 8
+		sensor(8, 256, true),//dio port 8, as5030 has 256 values, true means reversed
 		ctrlr(-3,0,0,&sensor, &winchSpeed), // XXX adjust here
 		baselmt(9), //dio port 9
 		brake(0) // relay port 0

@@ -17,9 +17,10 @@ class PWMInput: public PIDSource
  {DigitalInput rawsource;
   Counter updown, downup;
   const unsigned maxval;
+  const bool reversed;
 
  public:
-  PWMInput(uint32_t channel, unsigned max);
+  PWMInput(uint32_t channel, unsigned max, bool reversed = false);
   virtual ~PWMInput();
   double bareInput();
   double PIDGet();

@@ -1,28 +1,44 @@
 #include "WPILib.h"
 #include "Commands/Command.h"
 #include "Commands/TeleopDrive.h"
+#include "Commands/autoner.h"
 #include "CommandBase.h"
-
+/*
+class LowerElev : public CommandBase
+{public:
+	LowerElev() {Requires(elevator);}
+	void Initialize() {elevator->SetTarget(-6);}
+	void Execute() {}
+	bool IsFinished() {return elevator->Limit().Get() == false;}
+	void End() {}
+	void Interrupted() {}
+} lowerElev;
+*/
 class Robot: public IterativeRobot
 {
 private:
 	Command *autonomousCommand;
+	SendableChooser autoChooser;
 	LiveWindow *lw;
-	//Encoder enc;
 	void RobotInit()
 	{
 		CommandBase::init();
-		autonomousCommand = new TeleopDrive(); //TODO: real autonomous
+		autonomousCommand = 0; //TODO: real autonomous
+		autoChooser.AddObject("basicfield", new autoner(2.65)/*new Auto1*/);
+		autoChooser.AddObject("basicramp", new autoner(3)/*new Auto2*/);
+		autoChooser.AddDefault("nothing",0);
+		SmartDashboard::PutData("Which autonomous?", &autoChooser);
 		lw = LiveWindow::GetInstance();
 	}
 	
 	void DisabledPeriodic()
-	{//SmartDashboard::PutNumber("encoder", enc.GetDistance());
+	{
 		Scheduler::GetInstance()->Run();
 	}
 
 	void AutonomousInit()
 	{
+	  autonomousCommand = static_cast<Command*>(autoChooser.GetSelected());
 		if (autonomousCommand != NULL)
 			autonomousCommand->Start();
 	}
@@ -65,7 +81,6 @@ private:
 		lw->Run();
 	}
 public:
-	//Robot(): enc(8,9){}
 };
 
 START_ROBOT_CLASS(Robot);

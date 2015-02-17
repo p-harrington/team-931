@@ -19,7 +19,7 @@ void autoner::Execute()
 {
   elevator->SetTarget(2);
   Wait(1);
-  swerveDrive->Drive(-.1,-1,0,.5);
+  swerveDrive->Drive(.1,-1,0,.5);
   Wait(dist);
   swerveDrive->Drive(0,0,0,0);
   Wait(12);

@@ -18,6 +18,11 @@ CommandBase::CommandBase() :
 
 }
 
+CommandBase::CommandBase(double timeout) :
+  Command(timeout)
+ {
+ }
+
 void CommandBase::init()
 {
 	// Create a single static instance of all of your subsystems. The following

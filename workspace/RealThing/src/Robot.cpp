@@ -1,7 +1,13 @@
 #include "WPILib.h"
 #include "Commands/Command.h"
 #include "Commands/TeleopDrive.h"
+# define PIH 1
+# if PIH
+#include "Commands/autoPIH.h"
+typedef autoPIH autoner;
+# else
 #include "Commands/autoner.h"
+# endif
 #include "CommandBase.h"
 /*
 class LowerElev : public CommandBase
@@ -24,8 +30,10 @@ private:
 	{
 		CommandBase::init();
 		autonomousCommand = 0; //TODO: real autonomous
-		autoChooser.AddObject("basicfield", new autoner(2.65)/*new Auto1*/);
-		autoChooser.AddObject("basicramp", new autoner(3)/*new Auto2*/);
+		autoChooser.AddObject("totefield", new autoner(2.65)/*new Auto1*/);
+		autoChooser.AddObject("toteramp", new autoner(3)/*new Auto2*/);
+		autoChooser.AddObject("totebinfield", new autonerbot(2.65)/*new Auto3*/);
+		autoChooser.AddObject("totebinramp", new autonerbot(3)/*new Auto4*/);
 		autoChooser.AddDefault("nothing",0);
 		SmartDashboard::PutData("Which autonomous?", &autoChooser);
 		lw = LiveWindow::GetInstance();
@@ -44,7 +52,7 @@ private:
 	}
 
 	void AutonomousPeriodic()
-	{
+	{SmartDashboard::PutNumber("elev on target", CommandBase::elevator->OnTarget());
 		Scheduler::GetInstance()->Run();
 	}
 

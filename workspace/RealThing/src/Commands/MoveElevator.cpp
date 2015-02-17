@@ -1,6 +1,6 @@
 #include "MoveElevator.h"
 
-MoveElevator::MoveElevator()
+MoveElevator::MoveElevator() :CommandBase(2)
 {
 	// Use Requires() here to declare subsystem dependencies
 	Requires(elevator);
@@ -17,7 +17,7 @@ void MoveElevator::Execute()
 // Make this return true when this Command no longer needs to run execute()
 bool MoveElevator::IsFinished()
 {
-	return elevator->OnTarget();
+	return elevator->OnTarget() || IsTimedOut();
 }
 
 // Called once after isFinished returns true
@@ -62,12 +62,10 @@ void OperateElevator::Initialize()
  }
 
 void OperateElevator::Execute()
- {elevator->Runwinch(oi->ElevStick().GetY());
- }
+ {elevator->Runwinch(oi->ElevStick().GetY());}
 
 bool OperateElevator::IsFinished()
- {return false;
- }
+ {return ! RobotBase::getInstance().IsOperatorControl();}
 
 void OperateElevator::End()
  {

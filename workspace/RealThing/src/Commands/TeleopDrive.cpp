@@ -15,7 +15,8 @@ const float minThrottle = .4;
 void TeleopDrive::Execute()
 {
   Joystick & joy = oi->DriveStick();
-  swerveDrive->Drive(joy.GetX(Joystick::kLeftHand),
+  if (RobotBase::getInstance().IsOperatorControl())
+    swerveDrive->Drive(joy.GetX(Joystick::kLeftHand),
 	joy.GetY(Joystick::kLeftHand),
 # if newdrivestick
 	joy.GetTwist(),
@@ -26,6 +27,7 @@ void TeleopDrive::Execute()
 # endif
 	/*,
 	joy.GetRawButton(5)*/);//in case of realignment;5 is top left button
+  else swerveDrive->Drive(0,0,0,0);
 }
 
 // Make this return true when this Command no longer needs to run execute()
